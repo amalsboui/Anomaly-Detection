@@ -37,5 +37,5 @@ __pycache__/
 *.bak
 
 # Local project files
-APDescription.txt
-MTPs-Main-Container.txt
+**/APDescription.txt
+**/MTPs-Main-Container.txt
