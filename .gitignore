@@ -1,0 +1,38 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+.env
+*.egg-info
+
+# Java / JADE
+*.class
+*.jar
+*.log
+*.iml
+*.out
+
+# IDEs
+.vscode/
+.idea/
+*.ipr
+*.iws
+*.iml
+
+# Mininet / Topology
+*.pid
+*.tmp
+/mininet
+
+# Misc
+*.swp
+*.swo
+*.bak
+
