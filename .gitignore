@@ -36,3 +36,6 @@ __pycache__/
 *.swo
 *.bak
 
+# Local project files
+APDescription.txt
+MTPs-Main-Container.txt
