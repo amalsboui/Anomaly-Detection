@@ -129,10 +129,6 @@ All metrics are logged; `is_anomaly = 1` indicates anomalies.
 
 ## Notes
 
-- Ensure `psutil` and `iperf3` are installed on all hosts.
-```bash
-  sudo apt install python3-psutil iperf3
-```
 - SQLite database is automatically created if missing.
 - Adjust thresholds in `LocalAgent.java` or `get_metrics.py` for experiments.
 
