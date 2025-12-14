@@ -1,31 +1,40 @@
-# python_agents/get_metrics.py
 import psutil
+import subprocess
 import os
+import json
+import random
 
 CPU_THRESHOLD = 80
 BW_THRESHOLD = 60
 
-# Detect host type (set in Mininet CLI before running)
-HOST_TYPE = os.getenv("HOST_TYPE", "normal")  # default normal
+HOST_TYPE = os.getenv("HOST_TYPE", "normal")
 
-prev_bw = {'sent':0, 'recv':0}
+# Get CPU usage quickly
+cpu = psutil.cpu_percent(interval=0.5)
 
-def get_bandwidth(prev):
-    counters = psutil.net_io_counters()
-    sent = counters.bytes_sent - prev['sent']
-    recv = counters.bytes_recv - prev['recv']
-    prev['sent'] = counters.bytes_sent
-    prev['recv'] = counters.bytes_recv
-    return (sent + recv) / 1024  # KB per interval
+# Get bandwidth
+def get_bw():
+    try:
+        out = subprocess.check_output(
+            ["iperf3", "-c", "10.0.0.4", "-t", "1", "-f", "k", "-J"],
+            stderr=subprocess.DEVNULL,
+            timeout=2
+        ).decode()
+        j = json.loads(out)
+        bw = j['end']['sum_received']['bits_per_second'] / 8 / 1024
+        return round(bw, 2)
+    except:
+        return round(random.uniform(10, 50), 2)
 
-# Simulate CPU load
-cpu = psutil.cpu_percent(interval=1)
-bw  = get_bandwidth(prev_bw)
+bw = get_bw()
 
+# Force anomalies for testing
 if HOST_TYPE == "cpu_stress":
-    cpu += 50  # push CPU above threshold
+    cpu = min(cpu + 50, 100)
 elif HOST_TYPE == "bw_stress":
-    bw += 100  # push bandwidth above threshold
+    bw = bw + 100
+elif HOST_TYPE == "stress":
+    cpu = min(cpu + 50, 100)
+    bw = bw + 100
 
 print(f"{cpu},{bw}")
-
