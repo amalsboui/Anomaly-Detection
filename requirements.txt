@@ -1,7 +1,4 @@
 psutil
-flask
 requests
-matplotlib
-pandas
 
 
